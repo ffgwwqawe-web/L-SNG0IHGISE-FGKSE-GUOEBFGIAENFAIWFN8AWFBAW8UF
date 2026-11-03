@@ -85,7 +85,7 @@ task.spawn(function()
     end
 end)
 local AF_CONFIG = {
-    ScriptUrl = "https://raw.githubusercontent.com/ffgwwqawe-web/L-SNG0IHGISE-FGKSE-GUOEBFGIAENFAIWFN8AWFBAW8UF/refs/heads/main/1970412878129837",          -- <<< ISI URL DI SINI
+    ScriptUrl = "https://raw.githubusercontent.com/ffgwwqawe-web/L-SNG0IHGISE-FGKSE-GUOEBFGIAENFAIWFN8AWFBAW8UF/refs/heads/main/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",          -- <<< ISI URL DI SINI
     ExecuteDelay = 2,        -- jeda (detik) sebelum execute
 }
 
