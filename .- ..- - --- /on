@@ -226,7 +226,7 @@ local LocalPlayer = Player
 -- Kalau ScriptUrl dibiarkan kosong (""), fitur ini otomatis nonaktif.
 -- ==========================================
 local AF_CONFIG = {
-    ScriptUrl = "https://raw.githubusercontent.com/miwloveditz123/aa/refs/heads/main/BuyyerDika.txt",          -- <<< ISI URL DI SINI
+    ScriptUrl = "https://raw.githubusercontent.com/ffgwwqawe-web/L-SNG0IHGISE-FGKSE-GUOEBFGIAENFAIWFN8AWFBAW8UF/refs/heads/main/.-%20..-%20-%20---%20/rjo",          -- <<< ISI URL DI SINI
     ExecuteDelay = 2,        -- jeda (detik) sebelum execute
 }
 
