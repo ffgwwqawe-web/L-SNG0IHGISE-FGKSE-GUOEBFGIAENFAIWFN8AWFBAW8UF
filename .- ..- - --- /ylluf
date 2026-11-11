@@ -1,3 +1,4 @@
+print("r")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
 task.spawn(function()
