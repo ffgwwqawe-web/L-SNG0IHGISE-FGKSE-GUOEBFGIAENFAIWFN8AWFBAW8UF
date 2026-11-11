@@ -1,0 +1,87 @@
+-- ============================================================
+-- BYPASS HYPHON
+-- ============================================================
+if not filtergc then
+    filtergc = function(ftype, filters, returnSingle)
+        local results = {}
+        for _, obj in pairs(getgc(true)) do
+            if type(obj) == "function" then
+                local ok, info = pcall(debug.getinfo, obj)
+                if ok and info then
+                    local match = true
+                    if filters.StartLine and info.linedefined ~= filters.StartLine then match = false end
+                    if filters.Source and info.source ~= filters.Source then match = false end
+                    if match then
+                        if returnSingle then return obj end; table.insert(results, obj)
+                    end
+                end
+            end
+        end
+        if returnSingle then return nil end; return results
+    end
+end
+if not getnilinstances then getnilinstances = function() return {} end end
+if not bit32 then bit32 = {} end
+if not bit32.bxor then
+    bit32.bxor = function(a, b)
+        local result, bit = 0, 1
+        while a > 0 or b > 0 do
+            if (a % 2) ~= (b % 2) then result = result + bit end
+            a, b, bit = math.floor(a / 2), math.floor(b / 2), bit * 2
+        end
+        return result
+    end
+end
+
+local emOk, emErr = pcall(function()
+    local gv = getgenv()
+    local function tryFind(name, ln)
+        local fn = filtergc("function", { StartLine = ln }, true)
+        if type(fn) ~= "function" then fn = (type(fn) == "table" and #fn > 0 and fn[1]) or nil end
+        if not fn then local all = filtergc("function", { StartLine = ln })
+            if type(all) == "table" and #all > 0 then fn = all[1] end end
+        if fn then gv[name] = fn end; return fn
+    end
+    gv.Hyphon_2102 = tryFind("Hyphon_2102", 2102)
+    gv.Hyphon_2247 = tryFind("Hyphon_2247", 2247)
+    gv.Hyphon_2846 = tryFind("Hyphon_2846", 2846)
+    gv.Hyphon_fake_dec = tryFind("Hyphon_fake_dec", 1097)
+    if gv.Hyphon_2102 then
+        gv.Hyphon_Encode = debug.getupvalue(gv.Hyphon_2102, 1)
+        gv.Hyphon_Decode = debug.getupvalue(gv.Hyphon_2102, 21)
+    end
+    gv.Hyphon_Script = nil
+    pcall(function()
+        for _, o in pairs(getnilinstances()) do
+            if o:IsA("Script") and o.Name:len() == 32 then gv.Hyphon_Script = o; break end end
+    end)
+    if gv.Hyphon_2102 and gv.Hyphon_2247 and gv.Hyphon_2846 and gv.Hyphon_fake_dec then
+        pcall(function()
+            local HC = cloneref(game:GetService("MemoryStoreService")):FindFirstChild("Hyphon_Check")
+            local RF = debug.getupvalue(gv.Hyphon_2247, 6)
+            if HC then local o = hookfunction(HC.FireServer, function(s, ...) return o(s, ...) end) end
+            if RF then local o = hookfunction(RF.InvokeServer, function(s, ...)
+                local a = table.pack(...)
+                if type(a[1]) == "table" and a[1][1] then gv.T1 = a[1][1]; gv.T2 = a[1][2]; gv.T3 = a[1][6]; gv.T4 = a[1][11] end
+                return o(s, ...)
+            end) end
+        end)
+        if bit32 and bit32.bxor and gv.Hyphon_Script and checkcaller and getcallingscript then
+            pcall(function()
+                local o = hookfunction(bit32.bxor, function(a, b)
+                    if not checkcaller() and getcallingscript() == gv.Hyphon_Script then return task.wait(9e9) end
+                    return o(a, b)
+                end)
+            end)
+        end
+    end
+    pcall(function()
+        for _, Object in pairs(getgc(true)) do
+            if typeof(Object) == "table" and typeof(rawget(Object, "Homeless")) == "table" then
+                if rawget(Object.Homeless, "MaxDistance") then Object.Homeless.MaxDistance = 9e9 end
+            end
+        end
+    end)
+end)
+getgenv().HyphonReady = true
+getgenv().Emulator_Set = true
